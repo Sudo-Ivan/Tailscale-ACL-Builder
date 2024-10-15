@@ -19,14 +19,7 @@ const nodeTypes = {
   actionNode: ActionNode,
 };
 
-const initialNodes = [
-  {
-    id: "1",
-    type: "input",
-    data: { label: "Start Building ACL" },
-    position: { x: 250, y: 25 },
-  },
-];
+const initialNodes = [];
 
 const initialEdges = [];
 
