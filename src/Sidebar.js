@@ -13,9 +13,9 @@ const debounce = (func, wait) => {
 // Simple HuJSON parser
 const parseHuJSON = (input) => {
   // Remove comments
-  const withoutComments = input.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
+  const withoutComments = input.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "");
   // Handle trailing commas
-  const withoutTrailingCommas = withoutComments.replace(/,(\s*[}\]])/g, '$1');
+  const withoutTrailingCommas = withoutComments.replace(/,(\s*[}\]])/g, "$1");
   return JSON.parse(withoutTrailingCommas);
 };
 
@@ -42,31 +42,48 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
     edges.forEach((edge) => {
       const source = nodes.find((node) => node.id === edge.source);
       const target = nodes.find((node) => node.id === edge.target);
-      
-      if (source.type === 'sourceNode' && target.type === 'actionNode') {
-        const ruleKey = `${source.data.value}-${target.data.value}`;
+
+      if (!source || !target || !source.data || !target.data) return;
+
+      if (source.type === "sourceNode" && target.type === "actionNode") {
+        const ruleKey = `${source.data.value || ""}-${target.data.value || ""}`;
         if (!ruleMap.has(ruleKey)) {
           ruleMap.set(ruleKey, {
-            action: target.data.value,
-            src: [source.data.value],
-            dst: []
+            action: target.data.value || "",
+            src: [source.data.value || ""],
+            dst: [],
           });
         }
-      } else if (source.type === 'actionNode' && target.type === 'destinationNode') {
-        const sourceNode = nodes.find((node) => node.id === edges.find(e => e.target === source.id).source);
-        const ruleKey = `${sourceNode.data.value}-${source.data.value}`;
+      } else if (
+        source.type === "actionNode" &&
+        target.type === "destinationNode"
+      ) {
+        const sourceEdge = edges.find(
+          (e) =>
+            e.target === source.id &&
+            nodes.find((n) => n.id === e.source)?.type === "sourceNode",
+        );
+        if (!sourceEdge) return;
+
+        const sourceNode = nodes.find((node) => node.id === sourceEdge.source);
+        if (!sourceNode || !sourceNode.data) return;
+
+        const ruleKey = `${sourceNode.data.value || ""}-${source.data.value || ""}`;
         const rule = ruleMap.get(ruleKey);
-        if (rule) {
-          const [ip, port] = target.data.value.split(':');
-          const existingDst = rule.dst.find(d => d.startsWith(ip + ':'));
-          if (existingDst) {
-            const ports = existingDst.split(':')[1].split(',');
-            if (!ports.includes(port)) {
-              ports.push(port);
-              rule.dst[rule.dst.indexOf(existingDst)] = `${ip}:${ports.join(',')}`;
+        if (rule && target.data.value) {
+          const [ip, port] = target.data.value.split(":");
+          if (ip && port) {
+            const existingDst = rule.dst.find((d) => d.startsWith(ip + ":"));
+            if (existingDst) {
+              const ports = existingDst.split(":")[1].split(",");
+              if (!ports.includes(port)) {
+                ports.push(port);
+                rule.dst[rule.dst.indexOf(existingDst)] =
+                  `${ip}:${ports.join(",")}`;
+              }
+            } else {
+              rule.dst.push(target.data.value);
             }
-          } else {
-            rule.dst.push(target.data.value);
           }
         }
       }
@@ -90,7 +107,7 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
         console.error("Could not copy text: ", err);
         setAlert("Failed to copy ACL JSON.");
         setTimeout(() => setAlert(""), 3000);
-      }
+      },
     );
   }, [aclJson]);
 
@@ -109,14 +126,17 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
 
   const debouncedValidateAndFormat = useMemo(
     () => debounce(validateAndFormatACL, 300),
-    [validateAndFormatACL]
+    [validateAndFormatACL],
   );
 
-  const handleAclChange = useCallback((e) => {
-    const newValue = e.target.value;
-    setAclJson(newValue);
-    debouncedValidateAndFormat(newValue);
-  }, [debouncedValidateAndFormat]);
+  const handleAclChange = useCallback(
+    (e) => {
+      const newValue = e.target.value;
+      setAclJson(newValue);
+      debouncedValidateAndFormat(newValue);
+    },
+    [debouncedValidateAndFormat],
+  );
 
   const validateACL = (parsedAcl) => {
     const unsupportedFeatures = [];
@@ -124,7 +144,8 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
     if (parsedAcl.hosts) unsupportedFeatures.push("hosts");
     if (parsedAcl.tagOwners) unsupportedFeatures.push("tagOwners");
     if (parsedAcl.autoApprovers) unsupportedFeatures.push("autoApprovers");
-    if (parsedAcl.ssh && parsedAcl.ssh.some(rule => rule.checkPeriod)) unsupportedFeatures.push("SSH checkPeriod");
+    if (parsedAcl.ssh && parsedAcl.ssh.some((rule) => rule.checkPeriod))
+      unsupportedFeatures.push("SSH checkPeriod");
 
     return unsupportedFeatures;
   };
@@ -134,9 +155,11 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
     if (isValid) {
       const parsedAcl = JSON.parse(formatted);
       const unsupportedFeatures = validateACL(parsedAcl);
-      
+
       if (unsupportedFeatures.length > 0) {
-        setAlert(`Warning: The following features are not fully supported in visualization: ${unsupportedFeatures.join(", ")}`);
+        setAlert(
+          `Warning: The following features are not fully supported in visualization: ${unsupportedFeatures.join(", ")}`,
+        );
       } else {
         setAlert("");
       }

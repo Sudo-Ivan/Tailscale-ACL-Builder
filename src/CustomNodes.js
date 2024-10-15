@@ -2,24 +2,24 @@ import React, { useState, useCallback } from "react";
 import { Handle } from "@xyflow/react";
 
 const nodeStyle = {
-    padding: "10px",
-    border: "1px solid #4a4a4a",
-    borderRadius: "5px",
-    background: "#3a3a3a",
-    color: "#ffffff",
-    width: "220px",
-  };
-  
-  const inputStyle = {
-    margin: "5px 0",
-    padding: "5px",
-    width: "calc(100% - 10px)",
-    backgroundColor: "#2a2a2a",
-    color: "#ffffff",
-    border: "1px solid #4a4a4a",
-    borderRadius: "3px",
-    boxSizing: "border-box",
-  };
+  padding: "10px",
+  border: "1px solid #4a4a4a",
+  borderRadius: "5px",
+  background: "#3a3a3a",
+  color: "#ffffff",
+  width: "220px",
+};
+
+const inputStyle = {
+  margin: "5px 0",
+  padding: "5px",
+  width: "calc(100% - 10px)",
+  backgroundColor: "#2a2a2a",
+  color: "#ffffff",
+  border: "1px solid #4a4a4a",
+  borderRadius: "3px",
+  boxSizing: "border-box",
+};
 
 const NodeContent = ({ type, data, onChange }) => {
   const [localData, setLocalData] = useState(data);
@@ -61,7 +61,9 @@ export const SourceNode = ({ data, isConnectable }) => (
 );
 
 export const DestinationNode = ({ data, isConnectable }) => (
-  <div style={{...nodeStyle, width: "120px", fontSize: "0.8em", padding: "5px"}}>
+  <div
+    style={{ ...nodeStyle, width: "120px", fontSize: "0.8em", padding: "5px" }}
+  >
     <Handle type="target" position="left" isConnectable={isConnectable} />
     <NodeContent type="Destination" data={data} onChange={data.onChange} />
   </div>
