@@ -1,0 +1,261 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.flow-container {
+  flex-grow: 1;
+  height: 100%;
+  position: relative;
+}
+
+.button-container {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 4;
+}
+
+.button-container button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-container button:hover {
+  background-color: #4a4a4a;
+}
+
+.sidebar {
+  width: 400px; /* Fixed width */
+  background-color: #2a2a2a;
+  overflow-y: auto;
+  position: relative;
+  height: 100vh;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 0;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+}
+
+.copy-button {
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.copy-button:hover {
+  background-color: #4a4a4a;
+}
+
+.sidebar-content {
+  padding: 20px;
+  height: calc(100% - 60px); /* Adjust for the header */
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.react-flow__renderer {
+  background-color: #1e1e1e;
+}
+
+.react-flow__node {
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border-color: #4a4a4a;
+}
+
+.react-flow__node-default,
+.react-flow__node-input,
+.react-flow__node-output {
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border-color: #4a4a4a;
+}
+
+.react-flow__handle {
+  background-color: #5a5a5a;
+}
+
+.react-flow__edge-path {
+  stroke: #5a5a5a;
+}
+
+.react-flow__edge-text {
+  fill: #ffffff;
+}
+
+.react-flow__minimap {
+  background-color: #2a2a2a;
+}
+
+.react-flow__controls {
+  background-color: #2a2a2a;
+}
+
+.react-flow__controls-button {
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border-color: #4a4a4a;
+  fill: #ffffff;
+}
+
+.react-flow__panel {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+
+.react-flow__attribution {
+  background-color: rgba(42, 42, 42, 0.8);
+  color: #ffffff;
+}
+
+.react-flow__selection {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+.react-flow__nodesselection-rect {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+.react-flow__handle-connecting {
+  background-color: #ff6060;
+}
+
+.react-flow__handle-valid {
+  background-color: #55dd99;
+}
+
+.react-flow__background {
+  background-color: #1e1e1e;
+}
+
+.react-flow__edge-path-selector {
+  stroke: transparent;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #ffffff;
+}
+
+.react-flow__edge:focus .react-flow__edge-path,
+.react-flow__edge:focus-visible .react-flow__edge-path {
+  stroke: #ffffff;
+}
+
+.react-flow__node-default .react-flow__node-default__body,
+.react-flow__node-input .react-flow__node-input__body,
+.react-flow__node-output .react-flow__node-output__body {
+  background-color: #3a3a3a;
+  color: #ffffff;
+}
+
+.react-flow {
+  --xy-edge-stroke-default: #b1b1b7;
+  --xy-edge-stroke-width-default: 1;
+  --xy-edge-stroke-selected-default: #555;
+  --xy-connectionline-stroke-default: #b1b1b7;
+  --xy-connectionline-stroke-width-default: 1;
+  --xy-attribution-background-color-default: rgba(255, 255, 255, 0.5);
+  --xy-minimap-background-color-default: #2a2a2a;
+  --xy-background-pattern-dot-color-default: #91919a;
+  --xy-background-pattern-line-color-default: #333;
+  --xy-background-pattern-cross-color-default: #333;
+  --xy-node-color-default: #ffffff;
+  --xy-node-border-default: 1px solid #4a4a4a;
+  --xy-node-background-color-default: #3a3a3a;
+  --xy-node-group-background-color-default: rgba(58, 58, 58, 0.25);
+  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
+  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #1a192b;
+  --xy-handle-background-color-default: #5a5a5a;
+  --xy-handle-border-color-default: #3a3a3a;
+  --xy-selection-background-color-default: rgba(0, 89, 220, 0.08);
+  --xy-selection-border-default: 1px dotted rgba(0, 89, 220, 0.8);
+  --xy-controls-button-background-color-default: #3a3a3a;
+  --xy-controls-button-background-color-hover-default: #4a4a4a;
+  --xy-controls-button-color-default: #ffffff;
+  --xy-controls-button-color-hover-default: #ffffff;
+  --xy-controls-button-border-color-default: #4a4a4a;
+  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+}
+
+.acl-json {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 15px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  max-height: calc(100% - 80px);
+  overflow-y: auto;
+  border: 1px solid #3a3a3a;
+}
+
+.acl-json code {
+  display: block;
+}
