@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import {
   ReactFlow,
   MiniMap,
@@ -99,6 +99,78 @@ function App() {
     setEdges(initialEdges);
   };
 
+  const handleACLUpdate = useCallback((parsedAcl) => {
+    const newNodes = [];
+    const newEdges = [];
+    let nodeId = 1;
+    const verticalSpacing = 200;
+    const horizontalSpacing = 300;
+    const destVerticalSpacing = 80;
+    const destHorizontalSpacing = 180;
+    const maxNodesPerColumn = 5;
+
+    parsedAcl.acls.forEach((rule, ruleIndex) => {
+      const baseY = ruleIndex * verticalSpacing;
+
+      const sourceNode = {
+        id: `source-${nodeId}`,
+        type: 'sourceNode',
+        position: { x: 100, y: baseY },
+        data: { value: rule.src[0], onChange: (newData) => onNodeDataChange(`source-${nodeId}`, newData) },
+      };
+      newNodes.push(sourceNode);
+
+      const actionNode = {
+        id: `action-${nodeId}`,
+        type: 'actionNode',
+        position: { x: 100 + horizontalSpacing, y: baseY },
+        data: { value: rule.action, onChange: (newData) => onNodeDataChange(`action-${nodeId}`, newData) },
+      };
+      newNodes.push(actionNode);
+
+      newEdges.push({
+        id: `edge-source-action-${nodeId}`,
+        source: `source-${nodeId}`,
+        target: `action-${nodeId}`,
+      });
+
+      rule.dst.forEach((dst, dstIndex) => {
+        const [ip, portsString] = dst.split(':');
+        const ports = portsString ? portsString.split(',') : ['*'];
+
+        ports.forEach((port, portIndex) => {
+          const totalIndex = dstIndex * ports.length + portIndex;
+          const columnIndex = Math.floor(totalIndex / maxNodesPerColumn);
+          const rowIndex = totalIndex % maxNodesPerColumn;
+          const destinationNode = {
+            id: `destination-${nodeId}-${dstIndex}-${portIndex}`,
+            type: 'destinationNode',
+            position: { 
+              x: 100 + horizontalSpacing * 2 + columnIndex * destHorizontalSpacing, 
+              y: baseY + rowIndex * destVerticalSpacing
+            },
+            data: { 
+              value: `${ip}:${port}`, 
+              onChange: (newData) => onNodeDataChange(`destination-${nodeId}-${dstIndex}-${portIndex}`, newData) 
+            },
+          };
+          newNodes.push(destinationNode);
+
+          newEdges.push({
+            id: `edge-action-destination-${nodeId}-${dstIndex}-${portIndex}`,
+            source: `action-${nodeId}`,
+            target: `destination-${nodeId}-${dstIndex}-${portIndex}`,
+          });
+        });
+      });
+
+      nodeId++;
+    });
+
+    setNodes(newNodes);
+    setEdges(newEdges);
+  }, [setNodes, setEdges, onNodeDataChange]);
+
   return (
     <div className="app-container" onKeyDown={handleKeyDown} tabIndex={0}>
       <div className="flow-container" ref={reactFlowWrapper}>
@@ -125,7 +197,7 @@ function App() {
           <Background variant="dots" gap={12} size={1} />
         </ReactFlow>
       </div>
-      <Sidebar nodes={nodes} edges={edges} />
+      <Sidebar nodes={nodes} edges={edges} onACLUpdate={handleACLUpdate} />
     </div>
   );
 }
