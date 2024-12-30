@@ -172,7 +172,7 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2>Tailscale ACL JSON</h2>
+        <h2>Tailscale ACL HuJSON</h2>
         <button onClick={handleCopy} className="copy-button">
           Copy
         </button>

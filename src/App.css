@@ -54,18 +54,30 @@
   z-index: 4;
 }
 
-.button-container button {
-  margin-right: 10px;
-  padding: 5px 10px;
+.button-container button,
+.copy-button,
+.visualize-button {
+  padding: 8px 12px;
+  margin: 0 8px;
   background-color: #3a3a3a;
   color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
 }
 
-.button-container button:hover {
+.button-container button:hover,
+.copy-button:hover,
+.visualize-button:hover {
   background-color: #4a4a4a;
+}
+
+.button-container button:active,
+.copy-button:active,
+.visualize-button:active {
+  background-color: #2a2a2a;
 }
 
 .sidebar {
@@ -81,26 +93,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  color: #ffffff;
+  margin-bottom: 20px;
+  padding: 0 10px;
 }
 
 .sidebar-header h2 {
   margin: 0;
 }
 
-.copy-button {
-  background-color: #3a3a3a;
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
+.sidebar-actions {
+  display: flex;
+  gap: 8px;
 }
 
-.copy-button:hover {
-  background-color: #4a4a4a;
+.copy-button,
+.visualize-button {
+  margin-left: 0;
 }
 
 .sidebar-content {
@@ -257,41 +265,37 @@
   overflow-x: auto;
 }
 
-.visualize-button {
-  margin-left: 10px;
-  background-color: #4a4a4a;
-  color: #ffffff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
+.search-container {
+  position: absolute;
+  top: 10px;
+  right: 620px;
+  z-index: 4;
 }
 
-.visualize-button:hover {
-  background-color: #5a5a5a;
+.search-input {
+  padding: 8px 12px;
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #4a4a4a;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.import-export-buttons {
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  z-index: 4;
 }
 
 .alert {
-  margin-bottom: 10px;
+  background-color: #2a2a2a;
+  border-left: 4px solid #ff6060;
   padding: 10px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
-}
-
-.copy-button,
-.visualize-button {
-  padding: 5px 10px;
-  margin-left: 10px;
-  background-color: #4a4a4a;
+  margin-bottom: 10px;
   color: #ffffff;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
 }
 
-.copy-button:hover,
-.visualize-button:hover {
-  background-color: #5a5a5a;
+.success-alert {
+  border-left-color: #55dd99;
 }
